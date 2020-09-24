@@ -8,14 +8,11 @@ namespace RorschachModern.Database.Models
 {
     public class Choice
     {
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int QuestionID { get; set; }
         public string Text { get; set; }
+        public int HrScore { get; set; }
         public virtual Question Question { get; set; }
-
-
-
     }
 }

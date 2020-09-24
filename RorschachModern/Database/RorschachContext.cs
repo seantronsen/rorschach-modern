@@ -17,7 +17,7 @@ namespace RorschachModern.Database
         public DbSet<Question> Questions { get; set; }
         protected override void OnConfiguring( DbContextOptionsBuilder options )
         {
-            options.UseSqlServer("Data Source=localhost, 8585; Initial Catalog=Rorschach; UID=sa; PWD=Scheise125");
+            options.UseSqlServer("Data Source=localhost, 8585; Initial Catalog=Rorschach_Modern; UID=sa; PWD=Scheise125");
         }
     }
 }
