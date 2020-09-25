@@ -12,7 +12,7 @@ namespace RorschachModern.GraphQL.Inputs
         protected override void Configure(IInputObjectTypeDescriptor<InputResponse> descriptor)
         {
             base.Configure(descriptor);
-            descriptor.Field(x => x.QuestionID).Name("questionId").Type<IdType>();
+            descriptor.Field(x => x.QuestionId).Name("questionId").Type<IntType>();
             descriptor.Field(x => x.Text).Name("text").Type<StringType>();
         }
     }

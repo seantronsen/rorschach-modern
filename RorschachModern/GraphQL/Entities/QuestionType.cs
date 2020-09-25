@@ -21,16 +21,24 @@ namespace RorschachModern.GraphQL.Entities
             descriptor.Field(x => x.BlotCardID).Name("blotCardId").Ignore();
             descriptor.Field(x => x.Prompt).Name("prompt").Type<StringType>();
             descriptor.Field(x => x.Type).Name("type").Type<StringType>();
-            descriptor.Field(x => x.BlotCard).Name("blotCard").Type<BlotCardType>();
-            descriptor.Field(x => x.Survey).Name("survey").Type<SurveyType>();
-            descriptor.Field(b => ResolveChoicesAsync(default, default))
-                .Name("choices")
-                .Type<ListType<ChoiceType>>();
-            descriptor.Field(x => ResolveResponsesAsync(default, default))
-                .Name("responses")
-                .Type<ListType<ResponseType>>();
+            descriptor.Field<QuestionType>(x => ResolveBlotCardAsync(default, default)).Name("blotCard").Type<BlotCardType>();
+            descriptor.Field<QuestionType>(x => ResolveSurveyAsync(default, default)).Name("survey").Type<SurveyType>();
+            descriptor.Field<QuestionType>(b => ResolveChoicesAsync(default, default)).Name("choices").Type<ListType<ChoiceType>>();
+            descriptor.Field<QuestionType>(x => ResolveResponsesAsync(default, default)).Name("responses").Type<ListType<ResponseType>>();
 
         }
+
+
+
+        public async Task<BlotCard> ResolveBlotCardAsync( [Parent] Question question, [Service] RorschachContext rorschachContext )
+        {
+            return await rorschachContext.BlotCards.Where(x => x.ID== question.BlotCardID). FirstAsync();
+        }
+        public async Task<Survey> ResolveSurveyAsync( [Parent] Question question, [Service] RorschachContext rorschachContext )
+        {
+            return await rorschachContext.Surveys.Where(x => x.ID == question.SurveyID).FirstAsync();
+        }
+
 
 
         public async Task<IReadOnlyList<Response>> ResolveResponsesAsync( [Parent] Question question, [Service] RorschachContext rorschachContext )

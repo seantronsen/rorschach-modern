@@ -7,7 +7,7 @@ namespace RorschachModern.Database.Inputs
 {
     public class InputResponse
     {
-        public int QuestionID { get; set; }
+        public int QuestionId { get; set; }
         public string Text { get; set; }
 
     }

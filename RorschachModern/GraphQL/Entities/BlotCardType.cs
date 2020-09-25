@@ -23,8 +23,7 @@ namespace RorschachModern.GraphQL.Entities
             descriptor.Field(b => b.CardNumeral).Name("cardNumeral").Type<StringType>();
             descriptor.Field(b => b.FamiliarName).Name("familiarName").Type<StringType>();
             descriptor.Field(b => b.CommonPerceptions).Name("commonPerceptions").Type<StringType>();
-            descriptor.Field(b => ResolveQuestions(default, default))
-                .Name("questions").Type<ListType<QuestionType>>();
+            descriptor.Field<BlotCardType>(b => ResolveQuestions(default, default)).Name("questions").Type<ListType<QuestionType>>();
 
 
 

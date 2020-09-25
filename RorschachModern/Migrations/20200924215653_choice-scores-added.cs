@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RorschachModern.Migrations
 {
-    public partial class Init : Migration
+    public partial class choicescoresadded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,9 @@ namespace RorschachModern.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Image = table.Column<byte[]>(nullable: true),
-                    Text = table.Column<string>(nullable: true)
+                    CardNumeral = table.Column<string>(nullable: true),
+                    FamiliarName = table.Column<string>(nullable: true),
+                    CommonPerceptions = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,7 +36,7 @@ namespace RorschachModern.Migrations
                     AgeRange = table.Column<string>(nullable: true),
                     Occupation = table.Column<string>(nullable: true),
                     StartTime = table.Column<DateTime>(nullable: false),
-                    EndTime = table.Column<DateTime>(nullable: false),
+                    EndTime = table.Column<DateTime>(nullable: true),
                     IpAddress = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -92,7 +94,8 @@ namespace RorschachModern.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     QuestionID = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(nullable: true)
+                    Text = table.Column<string>(nullable: true),
+                    HrScore = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -19,9 +19,8 @@ namespace RorschachModern.GraphQL.Entities
             descriptor.Field(x => x.Name).Type<StringType>();
             descriptor.Field(x => x.Description).Type<StringType>();
             descriptor.Field(x => x.Purpose).Type<StringType>();
-            descriptor.Field(x => ResolveQuestions(default, default))
-                .Name("questions")
-                .Type<ListType<QuestionType>>();
+            descriptor.Field<SurveyType>(x => ResolveQuestions(default, default)).Name("questions").Type<ListType<QuestionType>>();
+
         }
 
         public async Task<IReadOnlyList<Question>> ResolveQuestions( [Parent] Survey survey, [Service] RorschachContext rorschachContext )

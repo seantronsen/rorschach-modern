@@ -10,8 +10,8 @@ using RorschachModern.Database;
 namespace RorschachModern.Migrations
 {
     [DbContext(typeof(RorschachContext))]
-    [Migration("20200922155517_blotcard-meta-added")]
-    partial class blotcardmetaadded
+    [Migration("20200924220254_order-number")]
+    partial class ordernumber
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace RorschachModern.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("RorschachModern.Models.BlotCard", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.BlotCard", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -40,17 +40,23 @@ namespace RorschachModern.Migrations
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.ToTable("BlotCards");
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Choice", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Choice", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("HrScore")
+                        .HasColumnType("int");
 
                     b.Property<int>("QuestionID")
                         .HasColumnType("int");
@@ -65,7 +71,7 @@ namespace RorschachModern.Migrations
                     b.ToTable("Choices");
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Participant", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Participant", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -104,7 +110,7 @@ namespace RorschachModern.Migrations
                     b.ToTable("Participants");
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Question", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Question", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -132,7 +138,7 @@ namespace RorschachModern.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Response", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Response", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -157,7 +163,7 @@ namespace RorschachModern.Migrations
                     b.ToTable("Responses");
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Survey", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Survey", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -178,39 +184,39 @@ namespace RorschachModern.Migrations
                     b.ToTable("Surveys");
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Choice", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Choice", b =>
                 {
-                    b.HasOne("RorschachModern.Models.Question", "Question")
+                    b.HasOne("RorschachModern.Database.Models.Question", "Question")
                         .WithMany("Choices")
                         .HasForeignKey("QuestionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Question", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Question", b =>
                 {
-                    b.HasOne("RorschachModern.Models.BlotCard", "BlotCard")
+                    b.HasOne("RorschachModern.Database.Models.BlotCard", "BlotCard")
                         .WithMany("Questions")
                         .HasForeignKey("BlotCardID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RorschachModern.Models.Survey", "Survey")
+                    b.HasOne("RorschachModern.Database.Models.Survey", "Survey")
                         .WithMany("Questions")
                         .HasForeignKey("SurveyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RorschachModern.Models.Response", b =>
+            modelBuilder.Entity("RorschachModern.Database.Models.Response", b =>
                 {
-                    b.HasOne("RorschachModern.Models.Participant", "Participant")
+                    b.HasOne("RorschachModern.Database.Models.Participant", "Participant")
                         .WithMany("Responses")
                         .HasForeignKey("ParticipantID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RorschachModern.Models.Question", "Question")
+                    b.HasOne("RorschachModern.Database.Models.Question", "Question")
                         .WithMany("Responses")
                         .HasForeignKey("QuestionID")
                         .OnDelete(DeleteBehavior.Cascade)

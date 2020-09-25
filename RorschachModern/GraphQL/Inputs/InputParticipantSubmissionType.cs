@@ -11,10 +11,14 @@ namespace RorschachModern.GraphQL.Inputs
             base.Configure(descriptor);
             descriptor.Field(x => x.ID)
                 .Name("id")
-                .Type<IdType>();
+                .Type<IntType>();
             descriptor.Field(x => x.Responses)
                 .Name("responses")
                 .Type<ListType<InputResponseType>>();
+                // .Type<ListType<InputResponseType>>();
         }
     }
 }
+
+
+// may need a generic specifieer

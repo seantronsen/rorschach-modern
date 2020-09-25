@@ -8,6 +8,8 @@ using HotChocolate;
 using HotChocolate.AspNetCore;
 using RorschachModern.Database;
 using RorschachModern.Database.Initializers;
+using RorschachModern.Database.Models;
+using RorschachModern.GraphQL.Entities;
 using RorschachModern.GraphQL.Misc;
 using RorschachModern.GraphQL.Schema;
 
@@ -29,7 +31,7 @@ namespace RorschachModern
 
             // services.AddHostedService<RandomService>();
 
-            services.AddEntityFrameworkSqlServer().AddDbContext<RorschachContext>();
+            services.AddEntityFrameworkSqlServer().AddDbContext<RorschachContext>(ServiceLifetime.Transient);
             DatabaseInitializer.Initialize();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -37,7 +39,9 @@ namespace RorschachModern
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddDataLoaderRegistry().AddGraphQL(sp => SchemaBuilder.New()
+            services
+                .AddDataLoaderRegistry()
+                .AddGraphQL(sp => SchemaBuilder.New()
                 .AddQueryType<RorschachQueryType>()
                 .AddMutationType<RorschachMutationType>()
                 .Create());
@@ -61,8 +65,7 @@ namespace RorschachModern
                 app.UseHsts();
             }
 
-            app
-                .UseGraphQLHttpPost(new HttpPostMiddlewareOptions { Path = "/graphql" })
+            app.UseGraphQLHttpPost(new HttpPostMiddlewareOptions { Path = "/graphql" })
                 .UseGraphQLHttpGetSchema(new HttpGetSchemaMiddlewareOptions { Path = "/graphql/schema" });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -76,7 +79,7 @@ namespace RorschachModern
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
+                      
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";

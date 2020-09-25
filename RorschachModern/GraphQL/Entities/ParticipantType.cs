@@ -24,7 +24,7 @@ namespace RorschachModern.GraphQL.Entities
             descriptor.Field(x => x.StartTime).Name("startTime").Type<DateTimeType>();
             descriptor.Field(x => x.EndTime).Name("endTime").Type<DateTimeType>();
             descriptor.Field(x => x.IpAddress).Name("ipAddress").Type<StringType>();
-            descriptor.Field(x => ResolveResponses(default, default))
+            descriptor.Field<ParticipantType>(x => ResolveResponses(default, default))
                 .Name("responses").Type<ListType<ResponseType>>();
         }
 

@@ -6,6 +6,6 @@ namespace RorschachModern.Database.Inputs
     public class InputParticipantSubmission
     {
         public int ID { get; set; }
-        public List<Response> Responses { get; set; }
+        public List<InputResponse> Responses { get; set; }
     }
 }

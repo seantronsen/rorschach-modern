@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
@@ -50,13 +51,26 @@ namespace RorschachModern.GraphQL.Schema
             if (input == null) throw new Exception("Error: Participant submission object was null. Data cannot be processed as a result.");
 
 
-            Participant participant = await rorschachContext.Participants.Where(x => x.ID == input.ID).FirstOrDefaultAsync(x => x == null);
+            Participant participant = await rorschachContext.Participants.Where(x => x.ID == input.ID).FirstAsync();
+            if (participant.EndTime != null) throw new Exception("Error: Participant identified in the submission has already completed the survey. ");
             if (participant == null) throw new Exception("Error: Participant identified in the submission could not be found within the data source. ");
             if (input.Responses.Count != RorschachSurveyProperties.GetTotalQuestions()) throw new Exception($"Error: An incorrect number of responses were submitted for processed. " +
                 $"The correct number to use is {RorschachSurveyProperties.GetTotalQuestions()}.");
+            List<Response> responses = new List<Response>();
+            foreach (var response in input.Responses)
+            {
+                Response holder = new Response()
+                {
+                    ParticipantID = input.ID,
+                    QuestionID = response.QuestionId,
+                    Text = response.Text
+                };
+                responses.Add(holder);
 
+            }
 
-            participant.Responses = input.Responses;
+            participant.Responses = responses;
+            participant.EndTime = DateTime.UtcNow;
             await rorschachContext.SaveChangesAsync();
             return participant;
         }
