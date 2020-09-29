@@ -39,7 +39,7 @@ namespace RorschachModern.GraphQL.Entities
 
         public async Task<IReadOnlyList<Question>> ResolveQuestions([Parent] BlotCard blotCard, [Service] RorschachContext rorschachContext)
         {
-            return await rorschachContext.Questions.Where(q => q.BlotCardID == blotCard.ID).ToListAsync();
+            return await rorschachContext.Questions.Where(q => q.BlotCardID == blotCard.ID).OrderByDescending(x => x.Type).ToListAsync();
         }
 
 

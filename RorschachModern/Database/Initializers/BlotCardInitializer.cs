@@ -45,7 +45,7 @@ namespace RorschachModern.Database.Initializers
                     numeral = "X";
                     break;
             }
-            return cardNumeral.Substring(0, cardNumeral.Length - 1) + " " + numeral;
+            return cardNumeral.Substring(0, cardNumeral.Length - 3) + " " + numeral;
         }
 
 

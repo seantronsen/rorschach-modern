@@ -32,7 +32,7 @@ namespace RorschachModern
             // services.AddHostedService<RandomService>();
 
             services.AddEntityFrameworkSqlServer().AddDbContext<RorschachContext>(ServiceLifetime.Transient);
-            DatabaseInitializer.Initialize();
+            //DatabaseInitializer.Initialize();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

@@ -18,7 +18,7 @@ namespace RorschachModern.Database
         protected override void OnConfiguring( DbContextOptionsBuilder options )
         {
             options.UseSqlServer("Server=tcp:tronsen-development.database.windows.net,1433;Initial Catalog=rorschach;Persist Security Info=False;" +
-                                 "User ID=phantom_root;Password=Scheise125;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                                 "User ID=phantom_root;Password=Scheise125;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;");
         }
     }
 }

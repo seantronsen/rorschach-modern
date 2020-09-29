@@ -6,7 +6,7 @@ namespace RorschachModern.GraphQL.Misc
     {
         public IError OnError(IError error)
         {
-            return error.WithMessage(error.Exception.Message + " " + error.Exception.StackTrace);
+            return error.WithMessage(error.Exception.Message );
         }
     }
 }

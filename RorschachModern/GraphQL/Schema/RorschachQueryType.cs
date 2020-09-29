@@ -32,7 +32,7 @@ namespace RorschachModern.GraphQL.Schema
             descriptor.Field(x => x.GetSurveys(default))
                 .Type<ListType<SurveyType>>();
             descriptor.Field(x => x.GetSurvey(default, default))
-                .Argument("id", a => a.Type<NonNullType<IdType>>())
+                .Argument("id", a => a.Type<NonNullType<IntType>>())
                 .Name("surveyById")
                 .Type<SurveyType>();
 
