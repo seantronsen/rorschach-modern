@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using RorschachModern.Database;
 using RorschachModern.Database.Inputs;
 using RorschachModern.Database.Models;
-using RorschachModern.Static;
 
 namespace RorschachModern.GraphQL.Schema
 {
@@ -21,9 +20,9 @@ namespace RorschachModern.GraphQL.Schema
         // Note that participants that have already taken the exam and mention this explicitly will be denied and that participants that have taken the test 
         // on a device with an IP already in the system will be put on a timed wait-list (15 minutes)
 
-        public async Task<Participant> CreateParticipant( [Service] RorschachContext rorschachContext,
+        public async Task<Participant> CreateParticipant([Service] RorschachContext rorschachContext,
             [Service] IResolverContext context, [Service] IHttpContextAccessor clientHttpContext
-            )
+        )
         {
             InputParticipant input = context.Argument<InputParticipant>("participant");
             var participant = new Participant()
@@ -43,19 +42,27 @@ namespace RorschachModern.GraphQL.Schema
             return participant;
         }
 
-        public async Task<Participant> CreateParticipantSubmission( [Service] RorschachContext rorschachContext,
+        public async Task<Participant> CreateParticipantSubmission([Service] RorschachContext rorschachContext,
             [Service] IResolverContext resolverContext)
         {
             InputParticipantSubmission input =
                 resolverContext.Argument<InputParticipantSubmission>("participantSubmission");
-            if (input == null) throw new Exception("Error: Participant submission object was null. Data cannot be processed as a result.");
+            if (input == null)
+                throw new Exception(
+                    "Error: Participant submission object was null. Data cannot be processed as a result.");
 
 
             Participant participant = await rorschachContext.Participants.Where(x => x.ID == input.ID).FirstAsync();
-            if (participant.EndTime != null) throw new Exception("Error: Participant identified in the submission has already completed the survey. ");
-            if (participant == null) throw new Exception("Error: Participant identified in the submission could not be found within the data source. ");
-            if (input.Responses.Count != RorschachSurveyProperties.GetTotalQuestions()) throw new Exception($"Error: An incorrect number of responses were submitted for processed. " +
-                $"The correct number to use is {RorschachSurveyProperties.GetTotalQuestions()}.");
+            if (participant.EndTime != null)
+                throw new Exception(
+                    "Error: Participant identified in the submission has already completed the survey. ");
+            if (participant == null)
+                throw new Exception(
+                    "Error: Participant identified in the submission could not be found within the data source. ");
+            int totalQuestions = await rorschachContext.Questions.CountAsync();
+            if (input.Responses.Count != totalQuestions)
+                throw new Exception($"Error: An incorrect number of responses were submitted for processed. " +
+                                    $"The correct number to use is {totalQuestions}.");
             List<Response> responses = new List<Response>();
             foreach (var response in input.Responses)
             {
@@ -66,7 +73,6 @@ namespace RorschachModern.GraphQL.Schema
                     Text = response.Text
                 };
                 responses.Add(holder);
-
             }
 
             participant.Responses = responses;
