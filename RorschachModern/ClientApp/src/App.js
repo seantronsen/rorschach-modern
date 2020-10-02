@@ -10,9 +10,9 @@ import WelcomePage from "./components/WelcomePage";
 import "./graphql/index";
 
 export default () => {
-  const [onWelcomePage, setOnWelcomePage] = useState(false);
+  const [onWelcomePage, setOnWelcomePage] = useState(true);
   const [onParticipantInformationPage, setOnParticipantInformationPage] = useState(false);
-  const [onParticipantSurveyPage, setOnParticipantSurveyPage] = useState(true);
+  const [onParticipantSurveyPage, setOnParticipantSurveyPage] = useState(false);
   const [onThankYouPage, setOnThankYouPage] = useState(false);
   const [onErrorPage, setOnErrorPage] = useState(undefined);
   const [participantId, setParticipantId] = useState(undefined);
