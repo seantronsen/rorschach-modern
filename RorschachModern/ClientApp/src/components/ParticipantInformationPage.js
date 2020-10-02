@@ -1,25 +1,9 @@
 import React, { useState } from "react";
 import { StyledPage, StyledCard, StyledButton, StyledTextField } from "./subcomponents/StyledComponents";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { MenuItem, Typography } from "@material-ui/core";
-import { LoadingCard, ErrorCard } from "./subcomponents/CommonCards";
+import { CREATE_PARTICIPANT } from "../graphql/mutations";
 
-const CREATE_PARTICIPANT = gql`
-  mutation CreateParticipant($participant: InputParticipantInput!) {
-    createParticipant(participant: $participant) {
-      id
-      name
-      ageRange
-      occupation
-      consent
-      honest
-      firstAttempt
-      startTime
-      endTime
-      ipAddress
-    }
-  }
-`;
 export default ({ handleButton, setParticipantName, setParticipantId }) => {
   const [name, setName] = useState(undefined);
   const [ageRange, setAgeRange] = useState("");
@@ -30,7 +14,6 @@ export default ({ handleButton, setParticipantName, setParticipantId }) => {
   const [honestPretty, setHonestPretty] = useState("No");
   const [consent, setConsent] = useState(false);
   const [consentPretty, setConsentPretty] = useState("No");
-  const [error, setError] = useState(false);
   const [createParticipant] = useMutation(CREATE_PARTICIPANT);
 
   const handleSubmit = async e => {
@@ -38,23 +21,14 @@ export default ({ handleButton, setParticipantName, setParticipantId }) => {
     if (!occupation) return alert("Occupation is a required field");
     if (!consent) return alert("Please give your consent through the corresponding consent field before continuing.");
 
-    const {data} = await createParticipant({
+    const { data } = await createParticipant({
       variables: { participant: { honest, firstAttempt, consent, ageRange, name, occupation } },
     });
-    console.log(data);
-    const id = data?.createParticipant?.id;
-    if (!id) return alert("An error has occurred during submission. Please contact developer by email: sean.tronsen@gmail.com");
+    if (!data) return alert("An error has occurred during submission. Please contact developer by email: sean.tronsen@gmail.com");
     setParticipantName(name);
-    setParticipantId(id);
-    alert("You are good Sean, ID is : ", id);
+    setParticipantId(parseInt(data.createParticipant.id, 10));
     handleButton();
   };
-  if (error)
-    return (
-      <StyledPage variant="outlined" elevation={3} style={{}}>
-        <ErrorCard />
-      </StyledPage>
-    );
 
   return (
     <StyledPage variant="outlined" elevation={3} style={{}}>

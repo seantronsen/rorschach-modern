@@ -3,17 +3,8 @@ import { StyledPage, StyledCard, StyledButton } from "./subcomponents/StyledComp
 import { useQuery, gql } from "@apollo/client";
 import { Typography } from "@material-ui/core";
 import { LoadingCard, ErrorCard } from "./subcomponents/CommonCards";
+import { GET_SURVEYS } from "../graphql/queries";
 export default ({ handleButton }) => {
-  const GET_SURVEYS = gql`
-    query GetSurvey {
-      surveys {
-        id
-        name
-        description
-        purpose
-      }
-    }
-  `;
   const { loading, error, data } = useQuery(GET_SURVEYS);
 
   if (loading)
@@ -37,8 +28,8 @@ export default ({ handleButton }) => {
         <Typography variant="h6">Created by: Sean Tronsen</Typography>
       </StyledCard>
       <StyledCard elevation={5}>
-        <Typography variant="body1">{data?.surveys[0]?.description}</Typography>
-        <Typography variant="body2">{data?.surveys[0]?.purpose}</Typography>
+        <Typography variant="body1">{data?.surveys[0]?.purpose}</Typography>
+        {data?.surveys[0]?.description && <Typography variant="body2">{data?.surveys[0]?.description}</Typography>}
       </StyledCard>
       <StyledCard elevation={5} style={{ display: "flex", alignItems: "normal", justifyContent: "center" }}>
         <StyledButton color="primary" size="large" variant="contained" onClick={handleButton}>
